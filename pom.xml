@@ -1,0 +1,235 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.skullabs.powerlib</groupId>
+	<artifactId>powerlib</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>Powerlib</name>
+	<description>Utility classes to boost your Java development</description>
+
+	<url>https://github.com/Skullabs/powerlib</url>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:Skullabs/powerlib.git</connection>
+		<developerConnection>scm:git:git@github.com:Skullabs/powerlib.git</developerConnection>
+		<url>git@github.com:Skullabs/powerlib.git</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>miere</id>
+			<email>miere.teixeira@gmail.com</email>
+			<name>Miere Liniel Teixeira</name>
+		</developer>
+		<developer>
+			<id>selomke</id>
+			<email>cesar.selomke@gmail.com</email>
+			<name>Cesar Henrique Selomke</name>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.source.version>1.8</jdk.source.version>
+		<jdk.compile.version>${jdk.source.version}</jdk.compile.version>
+		<!-- Test Properties -->
+		<build.profile.id>dev</build.profile.id>
+		<skip.integration.tests>true</skip.integration.tests>
+		<skip.unit.tests>false</skip.unit.tests>
+		<!-- Dependencies Versions -->
+		<version.junit>4.12</version.junit>
+		<version.lombok>1.14.8</version.lombok>
+		<version.mockito>1.10.19</version.mockito>
+		<version.maven.compiler.plugin>2.3.2</version.maven.compiler.plugin>
+	</properties>
+
+	<dependencies>
+		<!-- Test time dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${version.mockito}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Compile time dependencies -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${version.lombok}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<inherited>true</inherited>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${version.maven.compiler.plugin}</version>
+					<configuration>
+						<source>${jdk.source.version}</source>
+						<target>${jdk.compile.version}</target>
+						<optimize>false</optimize>
+						<debug>true</debug>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<generatedSourcesDirectory>${project.build.directory}/generated-sources/annotations</generatedSourcesDirectory>
+						<generatedTestSourcesDirectory>${project.build.directory}/generated-sources/test-annotations</generatedTestSourcesDirectory>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.18</version>
+					<executions>
+						<execution>
+							<id>integration-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<skipTests>${skip.integration.tests}</skipTests>
+								<includes>
+									<include>**/IT*.java</include>
+									<include>**/*IT.java</include>
+									<include>**/*IntegrationTest.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.18</version>
+					<configuration>
+						<skipTests>${skip.unit.tests}</skipTests>
+						<excludes>
+							<exclude>**/*IntegrationTest.java</exclude>
+							<exclude>**/*IT.java</exclude>
+							<exclude>**/IT*.java</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+
+		<!-- integration tests -->
+		<profile>
+			<id>integration-tests</id>
+			<properties>
+				<build.profile.id>integration-test</build.profile.id>
+				<skip.integration.tests>false</skip.integration.tests>
+				<skip.unit.tests>false</skip.unit.tests>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- deploy -->
+		<profile>
+			<id>deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.3</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.1</version>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<show>private</show>
+							<nohelp>true</nohelp>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.3</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>false</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
+</project>
