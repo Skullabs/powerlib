@@ -2,6 +2,8 @@ package power.util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +12,25 @@ import lombok.val;
 
 public class Util {
 
+	@SafeVarargs
+	public static <T> T[] array( T... objects ) {
+		return objects;
+	}
+
+	public static <T> List<T> list( T[] array ) {
+		return Arrays.asList( array );
+	}
+
 	public static <T> List<T> emptyList() {
 		return new ArrayList<>();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> list( Iterable<T> iterable ) {
+		val list = (List<T>)emptyList();
+		for ( val item : iterable )
+			list.add( item );
+		return list;
 	}
 
 	public static <T> Map<String, T> stringMap() {
@@ -34,26 +53,6 @@ public class Util {
 		return new RangeIterable(start, stop, step);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> listFrom( Iterable<T> iterable ) {
-		val list = (List<T>)emptyList();
-		for ( val item : iterable )
-			list.add( item );
-		return list;
-	}
-
-	public static List<Integer> rangeList( int stop ) {
-		return rangeList( 0, stop );
-	}
-
-	public static List<Integer> rangeList( int start, int stop ) {
-		return rangeList( start, stop, 1 );
-	}
-
-	public static List<Integer> rangeList( int start, int stop, int step ) {
-		return listFrom( new RangeIterable(start, stop, step) );
-	}
-
 	public static <F, S> KeyValue<F, S> tuple( F first, S second ) {
 		return new KeyValue<F, S>(first, second);
 	}
@@ -62,12 +61,32 @@ public class Util {
 		return string == null || string.isEmpty();
 	}
 
-	@SafeVarargs
-	public static <T> T[] array( T...objects ){
-		return objects;
-	}
-
 	public static <F,S> KeyValuePairedArrays<F,S> pair( F[] first, S[] second ) {
 		return new KeyValuePairedArrays<>(first, second);
+	}
+
+	public static <T> int len( T[] array ) {
+		return array.length;
+	}
+
+	public static <T> int len( Collection<T> array ) {
+		return array.size();
+	}
+
+	public static <T> int len( Iterable<T> array ) {
+		int length = 0;
+		for ( @SuppressWarnings( "unused" ) val t : array )
+			length++;
+		return length;
+	}
+
+	public static <T> boolean equal( T f, T s ) {
+		if ( f == null && s == null )
+			return true;
+		if ( f != null )
+			return f.equals( s );
+		if ( s != null )
+			return s.equals( f );
+		return false;
 	}
 }

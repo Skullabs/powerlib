@@ -1,7 +1,6 @@
 package power.util;
 
 import java.io.IOException;
-import java.util.concurrent.Callable;
 
 public class Throwables {
 
@@ -17,7 +16,7 @@ public class Throwables {
 		return new IOException( String.format( message, params ) );
 	}
 
-	public static <V> V silently( Callable<V> callable ){
+	public static <V> V silently( CallableThatThrowsException<V> callable ) {
 		try {
 			return callable.call();
 		} catch ( Throwable cause ) {
@@ -31,9 +30,5 @@ public class Throwables {
 		} catch ( Throwable cause ) {
 			throw runtime(cause);
 		}
-	}
-
-	public interface RunnableThatThrowsException {
-		void run() throws Exception;
 	}
 }
