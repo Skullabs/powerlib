@@ -31,4 +31,12 @@ public class Throwables {
 			throw runtime(cause);
 		}
 	}
+
+	public static void runAnyWay( RunnableThatThrowsException runnable ){
+		try {
+			runnable.run();
+		} catch ( Throwable cause ) {
+			cause.printStackTrace();
+		}
+	}
 }

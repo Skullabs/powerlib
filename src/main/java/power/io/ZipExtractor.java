@@ -1,7 +1,7 @@
 package power.io;
 
 import static power.io.IO.iterate;
-import static power.util.Util.file;
+import static power.io.IO.file;
 import static power.util.Throwables.io;
 
 import java.io.Closeable;
@@ -87,9 +87,16 @@ public class ZipExtractor implements Closeable {
 	}
 
 	private void copyCurrentEntryContentToOutputFile(String outputpath) throws IOException {
+		ensureThatParentDirectoryExists(outputpath);
 		@Cleanup FileOutputStream outputFile = new FileOutputStream(outputpath);
         for ( val bytes : iterate(zipFile) )
         	outputFile.write(bytes.buffer(), 0, bytes.length());
+	}
+
+	private void ensureThatParentDirectoryExists(String outputpath) throws IOException {
+		val file = file( file( outputpath ).getParent() );
+		if ( !file.mkdirs() && !file.exists() )
+			throw io("Can create the directory: %s", outputpath);
 	}
 
 	/**

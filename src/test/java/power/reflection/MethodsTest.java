@@ -46,7 +46,7 @@ interface Item {}
 @Accessors( fluent=true )
 class Hero {
 	
-	final List<Item> items = Util.emptyList();
+	final List<Item> items = Util.list();
 	
 	public void add( Item item ) {
 		items.add(item);

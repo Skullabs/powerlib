@@ -17,10 +17,10 @@ public class KeyValuePairedArrays<F, S> implements Iterable<KeyValue<F, S>> {
 
 	@Override
 	public Iterator<KeyValue<F, S>> iterator() {
-		return new TuplesIterator();
+		return new KeyValueIterator();
 	}
-	
-	class TuplesIterator implements Iterator<KeyValue<F,S>> {
+
+	class KeyValueIterator implements Iterator<KeyValue<F,S>> {
 		
 		volatile int firstCursor = 0;
 		volatile int secondCursor = 0;

@@ -1,6 +1,5 @@
 package power.util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,13 +20,13 @@ public class Util {
 		return Arrays.asList( array );
 	}
 
-	public static <T> List<T> emptyList() {
+	public static <T> List<T> list() {
 		return new ArrayList<>();
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> list( Iterable<T> iterable ) {
-		val list = (List<T>)emptyList();
+		val list = (List<T>)list();
 		for ( val item : iterable )
 			list.add( item );
 		return list;
@@ -35,10 +34,6 @@ public class Util {
 
 	public static <T> Map<String, T> stringMap() {
 		return new HashMap<>();
-	}
-
-	public static File file( String name ) {
-		return new File(name);
 	}
 
 	public static Iterable<Integer> range( int stop ) {
@@ -53,7 +48,7 @@ public class Util {
 		return new RangeIterable(start, stop, step);
 	}
 
-	public static <F, S> KeyValue<F, S> tuple( F first, S second ) {
+	public static <F, S> KeyValue<F, S> keyValue( F first, S second ) {
 		return new KeyValue<F, S>(first, second);
 	}
 
@@ -88,5 +83,19 @@ public class Util {
 		if ( s != null )
 			return s.equals( f );
 		return false;
+	}
+	
+	public static String tmpDir(){
+		return System.getProperty("java.io.tmpdir");
+	}
+	
+	public static String str( String template, Object...params ) {
+		return String.format( template, params );
+	}
+	
+	public static String str( Object obj ) {
+		if ( obj == null )
+			return "";
+		return obj.toString();
 	}
 }

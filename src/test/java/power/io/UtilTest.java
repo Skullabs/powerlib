@@ -10,12 +10,15 @@ import static power.util.Util.len;
 import static power.util.Util.list;
 import static power.util.Util.pair;
 import static power.util.Util.range;
+import static power.util.Util.str;
 
 import java.util.List;
 
 import lombok.val;
 
 import org.junit.Test;
+
+import power.util.Util;
 
 public class UtilTest {
 
@@ -73,5 +76,21 @@ public class UtilTest {
 		assertFalse( equal( str1, "World" ) );
 		assertFalse( equal( null, str2 ) );
 		assertTrue( equal( str1, str2 ) );
+	}
+	
+	@Test
+	public void ensureThatCanRetrieveTmpDir(){
+		System.setProperty("java.io.tmpdir", "/tmp");
+		assertEquals( "/tmp", Util.tmpDir() );
+	}
+	
+	@Test
+	public void ensureThatCanCreateStringFromStrMethod(){
+		val newString = str( "Hello %s", "World" );
+		assertEquals( "Hello World", newString );
+		val emptyStringFromNull = str( null );
+		assertEquals( "", emptyStringFromNull );
+		assertEquals( "12", str( new Integer(12) ) );
+		assertEquals( "12.3", str( 12.3 ) );
 	}
 }
