@@ -7,8 +7,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import lombok.val;
+import power.util.KeyValuePairedArrays;
 
 public class Methods {
+	
+	private Methods(){}
 
 	/**
 	 * @param target
@@ -74,6 +77,11 @@ public class Methods {
 		if ( !tuples.hasSameLenght() && expectedTypes.length != 0 )
 			return false;
 
+		return parametersMatchesToExpectedTypes(tuples);
+	}
+
+	private static boolean parametersMatchesToExpectedTypes(
+			final KeyValuePairedArrays<Class<?>, Class<?>> tuples) {
 		for ( val tuple : tuples )
 			if ( !tuple.first().isAssignableFrom( tuple.second() ) )
 				return false;

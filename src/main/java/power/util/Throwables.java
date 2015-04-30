@@ -3,6 +3,8 @@ package power.util;
 import java.io.IOException;
 
 public class Throwables {
+	
+	private Throwables(){}
 
 	public static RuntimeException runtime( Throwable cause ) {
 		return new RuntimeException(cause);
@@ -19,7 +21,9 @@ public class Throwables {
 	public static <V> V silently( CallableThatThrowsException<V> callable ) {
 		try {
 			return callable.call();
+		// UNCHECKED: Really need to catch all exceptions here
 		} catch ( Throwable cause ) {
+		// CHECKED
 			throw runtime(cause);
 		}
 	}
@@ -27,7 +31,9 @@ public class Throwables {
 	public static void silently( RunnableThatThrowsException runnable ){
 		try {
 			runnable.run();
+		// UNCHECKED: Really need to catch all exceptions here
 		} catch ( Throwable cause ) {
+		// CHECKED
 			throw runtime(cause);
 		}
 	}
@@ -35,7 +41,9 @@ public class Throwables {
 	public static void runAnyWay( RunnableThatThrowsException runnable ){
 		try {
 			runnable.run();
+		// UNCHECKED: Really need to catch all exceptions here
 		} catch ( Throwable cause ) {
+		// CHECKED
 			cause.printStackTrace();
 		}
 	}

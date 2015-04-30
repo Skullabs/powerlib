@@ -12,6 +12,8 @@ import lombok.val;
 
 public class IO {
 
+	private IO(){}
+
 	/**
 	 * @param original
 	 * @return

@@ -19,7 +19,12 @@ public class InputStreamIterable implements Iterable<ByteBuffer>, Closeable {
 		return new ChunkIterator();
 	}
 
-	class ChunkIterator implements Iterator<ByteBuffer>{
+	@Override
+	public void close() throws IOException {
+		stream.close();
+	}
+
+	class ChunkIterator implements Iterator<ByteBuffer> {
 
 		final ByteBuffer buffer = new ByteBuffer();
 
@@ -35,10 +40,5 @@ public class InputStreamIterable implements Iterable<ByteBuffer>, Closeable {
 		public ByteBuffer next() {
 				return buffer;
 		}
-	}
-
-	@Override
-	public void close() throws IOException {
-		stream.close();
 	}
 }

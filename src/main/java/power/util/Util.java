@@ -11,6 +11,8 @@ import lombok.val;
 
 public class Util {
 
+	private Util(){}
+
 	@SafeVarargs
 	public static <T> T[] array( T... objects ) {
 		return objects;
@@ -70,11 +72,16 @@ public class Util {
 
 	public static <T> int len( Iterable<T> array ) {
 		int length = 0;
+
+		// UNCHECKED: There is no intent to use the t variable.
 		for ( @SuppressWarnings( "unused" ) val t : array )
 			length++;
+		// CHECKED
+		
 		return length;
 	}
 
+	// UNCHECKED: Return count higher than 2 to avoid complex variable assertions
 	public static <T> boolean equal( T f, T s ) {
 		if ( f == null && s == null )
 			return true;
@@ -83,6 +90,7 @@ public class Util {
 		if ( s != null )
 			return s.equals( f );
 		return false;
+		// CHECKED
 	}
 	
 	public static String tmpDir(){
