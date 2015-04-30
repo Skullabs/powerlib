@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<!--
+    Checkstyle-Configuration: The Clean Coder Checkstyle
+    Description: 
+A nice way to keep your code reusable and readable.
+-->
+<module name="Checker">
+  <property name="severity" value="warning"/>
+  <module name="TreeWalker">
+    <module name="FileContentsHolder"/>
+    <module name="SuppressWarnings">
+      <property name="severity" value="error"/>
+      <property name="format" value="^unused$"/>
+    </module>
+    <module name="AnnotationLocation">
+      <property name="severity" value="error"/>
+      <property name="allowSamelineParameterizedAnnotation" value="true"/>
+    </module>
+    <module name="AbstractClassName">
+      <property name="severity" value="error"/>
+      <property name="ignoreName" value="true"/>
+    </module>
+    <module name="ClassTypeParameterName">
+      <property name="severity" value="error"/>
+      <property name="format" value="^[A-Z]{0,3}$"/>
+    </module>
+    <module name="ConstantName">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="LocalVariableName">
+      <property name="severity" value="error"/>
+      <property name="allowOneCharVarInForLoop" value="true"/>
+    </module>
+    <module name="LocalFinalVariableName">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="MemberName">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="MethodName">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="MethodTypeParameterName">
+      <property name="severity" value="error"/>
+      <property name="format" value="^[A-Z]{0,3}$"/>
+    </module>
+    <module name="InterfaceTypeParameterName">
+      <property name="severity" value="error"/>
+      <property name="format" value="^[A-Z]{0,3}$"/>
+    </module>
+    <module name="PackageName">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="ParameterName">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="StaticVariableName">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="TypeName">
+      <property name="severity" value="error"/>
+      <property name="tokens" value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF"/>
+    </module>
+    <module name="IllegalImport">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="RedundantImport">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="UnusedImports">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="AnonInnerLength">
+      <property name="severity" value="error"/>
+      <property name="max" value="15"/>
+    </module>
+    <module name="ExecutableStatementCount">
+      <property name="severity" value="info"/>
+      <property name="max" value="10"/>
+      <property name="tokens" value="INSTANCE_INIT,STATIC_INIT,METHOD_DEF,CTOR_DEF"/>
+    </module>
+    <module name="LineLength">
+      <property name="severity" value="error"/>
+      <property name="max" value="160"/>
+    </module>
+    <module name="MethodLength">
+      <property name="severity" value="error"/>
+      <property name="max" value="10"/>
+      <property name="countEmpty" value="false"/>
+    </module>
+    <module name="ParameterNumber">
+      <property name="severity" value="error"/>
+      <property name="max" value="4"/>
+    </module>
+    <module name="GenericWhitespace">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="NoWhitespaceAfter">
+      <property name="severity" value="warning"/>
+      <property name="tokens" value="ARRAY_INIT,DOT,LNOT,TYPECAST"/>
+    </module>
+    <module name="NoWhitespaceBefore">
+      <property name="severity" value="warning"/>
+      <property name="allowLineBreaks" value="true"/>
+      <property name="tokens" value="SEMI,DOT,POST_DEC,POST_INC"/>
+    </module>
+    <module name="RedundantModifier">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="EmptyBlock">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="EmptyCatchBlock">
+      <property name="severity" value="error"/>
+      <property name="commentFormat" value="XXX: .{3}.*"/>
+    </module>
+    <module name="DefaultComesLast">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="EqualsAvoidNull">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="IllegalCatch">
+      <property name="severity" value="warning"/>
+      <property name="illegalClassNames" value="java.lang.Exception, java.lang.Throwable"/>
+    </module>
+    <module name="IllegalType">
+      <property name="severity" value="error"/>
+      <property name="tokens" value="METHOD_DEF,PARAMETER_DEF,VARIABLE_DEF"/>
+    </module>
+    <module name="ModifiedControlVariable">
+      <property name="severity" value="warning"/>
+    </module>
+    <module name="NestedForDepth">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="NestedIfDepth">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="NestedTryDepth"/>
+    <module name="PackageDeclaration">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="ReturnCount">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="SimplifyBooleanExpression">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="SimplifyBooleanReturn">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="StringLiteralEquality">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="UnnecessaryParentheses">
+      <property name="severity" value="warning"/>
+    </module>
+    <module name="VariableDeclarationUsageDistance">
+      <property name="severity" value="error"/>
+      <property name="allowedDistance" value="4"/>
+    </module>
+    <module name="InnerTypeLast">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="HideUtilityClassConstructor">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="MutableException">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="ThrowsCount">
+      <property name="severity" value="error"/>
+      <property name="max" value="2"/>
+    </module>
+    <module name="ClassFanOutComplexity">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="CyclomaticComplexity">
+      <property name="severity" value="error"/>
+      <property name="max" value="6"/>
+    </module>
+    <module name="JavaNCSS">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="ArrayTypeStyle">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="UpperEll">
+      <property name="severity" value="error"/>
+    </module>
+  </module>
+  <module name="FileLength">
+    <property name="severity" value="error"/>
+    <property name="max" value="500"/>
+  </module>
+  <module name="SuppressionCommentFilter">
+    <property name="offCommentFormat" value="UNCHECKED: .{3}.*"/>
+    <property name="onCommentFormat" value="CHECKED"/>
+  </module>
+</module>
