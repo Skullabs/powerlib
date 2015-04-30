@@ -91,7 +91,7 @@ A nice way to keep your code reusable and readable.
     </module>
     <module name="MethodLength">
       <property name="severity" value="error"/>
-      <property name="max" value="10"/>
+      <property name="max" value="12"/>
       <property name="countEmpty" value="false"/>
     </module>
     <module name="ParameterNumber">
@@ -103,7 +103,7 @@ A nice way to keep your code reusable and readable.
     </module>
     <module name="NoWhitespaceAfter">
       <property name="severity" value="warning"/>
-      <property name="tokens" value="ARRAY_INIT,DOT,LNOT,TYPECAST"/>
+      <property name="tokens" value="DOT,LNOT,TYPECAST"/>
     </module>
     <module name="NoWhitespaceBefore">
       <property name="severity" value="warning"/>
@@ -149,6 +149,7 @@ A nice way to keep your code reusable and readable.
     </module>
     <module name="ReturnCount">
       <property name="severity" value="error"/>
+      <property name="max" value="4"/>
     </module>
     <module name="SimplifyBooleanExpression">
       <property name="severity" value="error"/>

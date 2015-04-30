@@ -18,7 +18,8 @@ public class Util {
 		return objects;
 	}
 
-	public static <T> List<T> list( T[] array ) {
+	@SafeVarargs
+	public static <T> List<T> list( T...array ) {
 		return Arrays.asList( array );
 	}
 
