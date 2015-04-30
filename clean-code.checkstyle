@@ -23,6 +23,7 @@ A nice way to keep your code reusable and readable.
     </module>
     <module name="AbstractClassName">
       <property name="severity" value="error"/>
+      <property name="format" value="^Abstract.*$"/>
       <property name="ignoreName" value="true"/>
     </module>
     <module name="ClassTypeParameterName">
