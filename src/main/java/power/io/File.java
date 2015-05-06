@@ -6,10 +6,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Iterator;
 
 import lombok.Cleanup;
 
-public class File extends java.io.File {
+public class File extends java.io.File implements Iterable<File> {
 
 	private static final long serialVersionUID = 6998470422524368263L;
 
@@ -66,5 +67,26 @@ public class File extends java.io.File {
 	 */
 	public FileOutputStream openForWrite(){
 		return silently( () -> new FileOutputStream(this) );
+	}
+
+	@Override
+	public Iterator<File> iterator() {
+		return new FileIterator();
+	}
+
+	class FileIterator implements Iterator<File> {
+
+		final java.io.File[] foundFiles = listFiles();
+		int cursor = 0;
+
+		@Override
+		public boolean hasNext() {
+			return cursor < foundFiles.length;
+		}
+
+		@Override
+		public File next() {
+			return new File( foundFiles[cursor++].getAbsolutePath() );
+		}
 	}
 }

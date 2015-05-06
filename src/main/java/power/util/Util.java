@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -106,5 +107,9 @@ public class Util {
 		if ( obj == null )
 			return "";
 		return obj.toString();
+	}
+
+	public static <T> Iterable<T> iterate( Iterator<T> iterator ) {
+		return () -> iterator;
 	}
 }
