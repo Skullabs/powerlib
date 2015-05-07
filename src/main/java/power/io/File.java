@@ -1,9 +1,12 @@
 package power.io;
 
+import static power.io.IO.iterate;
+import static power.util.Throwables.io;
 import static power.util.Throwables.silently;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Iterator;
@@ -29,44 +32,95 @@ public class File extends java.io.File implements Iterable<File> {
 	/**
 	 * @return all read bytes as String
 	 */
-	public String read(){
-		return silently( () -> {
+	public String read() {
+		return silently(() -> {
 			final StringBuilder buffer = new StringBuilder();
-			@Cleanup final InputStreamIterable iterator = reader();
-			for ( final ByteBuffer bytes : iterator )
-				buffer.append( bytes.toString() );
+			@Cleanup
+			final InputStreamIterable iterator = reader();
+			for (final ByteBuffer bytes : iterator)
+				buffer.append(bytes.toString());
 			return buffer.toString();
 		});
 	}
 
-	public InputStreamIterable reader(){
+	public InputStreamIterable reader() {
 		final InputStream fileStream = openForRead();
-		return new InputStreamIterable( fileStream );
+		return new InputStreamIterable(fileStream);
 	}
 
 	public FileInputStream openForRead() {
-		return silently( () -> new FileInputStream(this) );
+		return silently(() -> new FileInputStream(this));
 	}
 
 	/**
 	 * @return a line reader
 	 */
-	public LineReaderIterable readLines(){
-		return silently( ()-> new LineReaderIterable(this) );
+	public LineReaderIterable readLines() {
+		return silently(() -> new LineReaderIterable(this));
 	}
 
 	/**
 	 * @return
 	 */
-	public FileWriter writer(){
-		return silently( ()-> new FileWriter(this) );
+	public FileWriter writer() {
+		return silently(() -> new FileWriter(this));
 	}
-	
+
 	/**
 	 * @return
 	 */
-	public FileOutputStream openForWrite(){
-		return silently( () -> new FileOutputStream(this) );
+	public FileOutputStream openForWrite() {
+		return silently(() -> new FileOutputStream(this));
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean removeRecursively() {
+		return deleteRecursively(this);
+	}
+
+	boolean deleteRecursively(File directory) {
+		if ( directory.exists() )
+			for (File file : directory) {
+				if ( file.isDirectory() )
+					return deleteRecursively(file);
+				if ( !file.delete() )
+					return false;
+			}
+		return true;
+	}
+
+	/**
+	 * @param file
+	 * @throws IOException if can't create the file or the {@code file}
+	 * 	argument isn't a directory. 
+	 */
+	public void copyTo( File file ) throws IOException {
+		file.getParentFile().ensureExistsAsDirectory();
+		InputStreamIterable input = iterate( openForRead() );
+		FileOutputStream output = file.openForWrite();
+		for ( ByteBuffer buffer : input )
+			output.write(buffer.buffer(), 0, buffer.length() );
+		input.close();
+		output.close();
+	}
+
+	public File getParentFile(){
+		return new File( super.getParentFile().getAbsolutePath() );
+	}
+
+	public void ensureExistsAsDirectory() throws IOException{
+		if ( !mkdirs() && !exists() )
+			throw io( "Can't create: %s", getAbsolutePath() );
+	}
+	
+	/**
+	 * @param name
+	 * @return
+	 */
+	public File newFileHere( String name ) {
+		return new File( this, name );
 	}
 
 	@Override
@@ -86,7 +140,7 @@ public class File extends java.io.File implements Iterable<File> {
 
 		@Override
 		public File next() {
-			return new File( foundFiles[cursor++].getAbsolutePath() );
+			return new File(foundFiles[cursor++].getAbsolutePath());
 		}
 	}
 }
