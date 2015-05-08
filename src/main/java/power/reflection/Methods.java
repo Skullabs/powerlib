@@ -17,7 +17,7 @@ public class Methods {
 	 * @param target
 	 * @param name
 	 * @param expectedTypes
-	 * @return
+	 * @return a invokable method
 	 */
 	public static InvokableMethod getMethod( Object target, String name, Class<?>...expectedTypes ) {
 		for ( val method : target.getClass().getMethods() )
@@ -31,7 +31,7 @@ public class Methods {
 	 * @param target
 	 * @param name
 	 * @param numberOfParameters
-	 * @return
+	 * @return a invokable method
 	 */
 	public static InvokableMethod getStaticMethod( Class<?> target, String name, int numberOfParameters ) {
 		for ( val method : target.getMethods() )
@@ -45,7 +45,7 @@ public class Methods {
 	/**
 	 * @param target
 	 * @param numberOfParameters
-	 * @return
+	 * @return a invokable method
 	 */
 	public static InvokableMethod getConstructor( Class<?> target, int numberOfParameters ) {
 		for ( val constructor : target.getConstructors() )
@@ -57,7 +57,7 @@ public class Methods {
 	/**
 	 * @param target
 	 * @param numberOfParameters
-	 * @return
+	 * @return a invokable method
 	 */
 	public static InvokableMethod getConstructor( Class<?> target, Class<?>...expectedTypes ) {
 		for ( val constructor : target.getConstructors() )

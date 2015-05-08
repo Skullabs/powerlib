@@ -60,21 +60,21 @@ public class File extends java.io.File implements Iterable<File> {
 	}
 
 	/**
-	 * @return
+	 * @return file writer
 	 */
 	public FileWriter writer() {
 		return silently(() -> new FileWriter(this));
 	}
 
 	/**
-	 * @return
+	 * @return {@link FileOutputStream}
 	 */
 	public FileOutputStream openForWrite() {
 		return silently(() -> new FileOutputStream(this));
 	}
 
 	/**
-	 * @return
+	 * @return true if removed with success
 	 */
 	public boolean removeRecursively() {
 		return deleteRecursively(this);
@@ -117,7 +117,7 @@ public class File extends java.io.File implements Iterable<File> {
 	
 	/**
 	 * @param name
-	 * @return
+	 * @return a new file
 	 */
 	public File newFileHere( String name ) {
 		return new File( this, name );
