@@ -122,8 +122,8 @@
 					<configuration>
 						<source>${jdk.source.version}</source>
 						<target>${jdk.compile.version}</target>
-						<optimize>false</optimize>
-						<debug>true</debug>
+						<optimize>true</optimize>
+						<debug>false</debug>
 						<encoding>${project.build.sourceEncoding}</encoding>
 						<generatedSourcesDirectory>${project.build.directory}/generated-sources/annotations</generatedSourcesDirectory>
 						<generatedTestSourcesDirectory>${project.build.directory}/generated-sources/test-annotations</generatedTestSourcesDirectory>
@@ -222,6 +222,7 @@
 						<configuration>
 							<show>private</show>
 							<nohelp>true</nohelp>
+						<excludePackageNames>power.io;power.reflection</excludePackageNames>
 						</configuration>
 					</plugin>
 					<plugin>

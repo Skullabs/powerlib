@@ -16,7 +16,7 @@ public class IO {
 
 	/**
 	 * @param original
-	 * @return
+	 * @return file
 	 */
 	public static power.io.File file( File original ) {
 		return new power.io.File( original.getAbsolutePath() );
@@ -24,7 +24,7 @@ public class IO {
 
 	/**
 	 * @param name
-	 * @return
+	 * @return file
 	 */
 	public static power.io.File file( String name, Object...args ) {
 		return new power.io.File( str( name, args) );
@@ -32,7 +32,7 @@ public class IO {
 
 	/**
 	 * @param fileName
-	 * @return
+	 * @return {@link ZipExtractor}
 	 */
 	public static ZipExtractor unzip( String fileName ) {
 		return unzip( file( fileName ) );
@@ -40,7 +40,7 @@ public class IO {
 
 	/**
 	 * @param file
-	 * @return
+	 * @return {@link ZipExtractor}
 	 */
 	public static ZipExtractor unzip( File file ) {
 		return silently( () -> {
@@ -51,7 +51,7 @@ public class IO {
 
 	/**
 	 * @param fileName
-	 * @return
+	 * @return {@link ZipExtractor}
 	 */
 	public static ZipExtractor unzip( InputStream fileName ) {
 		return silently( () -> {
@@ -62,7 +62,7 @@ public class IO {
 
 	/**
 	 * @param fileName
-	 * @return
+	 * @return {@link InputStream}
 	 */
 	public static InputStream resourceFile(String fileName) {
 		return ZipExtractor.class.getResourceAsStream("/" + fileName);
@@ -70,7 +70,7 @@ public class IO {
 
 	/**
 	 * @param fileName
-	 * @return
+	 * @return {@link ZipCompressor}
 	 */
 	public static ZipCompressor zip( final String fileName ) {
 		return silently( () -> new ZipCompressor(fileName) );
@@ -78,7 +78,7 @@ public class IO {
 
 	/**
 	 * @param file
-	 * @return
+	 * @return {@link ZipCompressor}
 	 */
 	public static ZipCompressor zip( final File file ) {
 		return silently( () -> new ZipCompressor(file) );
@@ -86,7 +86,7 @@ public class IO {
 
 	/**
 	 * @param zipFileName
-	 * @return
+	 * @return {@link ZipFileReader}
 	 */
 	public static ZipFileReader zipReader( final String zipFileName ) {
 		val fixedName = zipFileName.replace( "%20", " " );
@@ -96,7 +96,7 @@ public class IO {
 
 	/**
 	 * @param file
-	 * @return
+	 * @return {@link ZipFileReader}
 	 */
 	public static ZipFileReader zipReader(final File file) {
 		return silently( () ->
@@ -105,7 +105,7 @@ public class IO {
 
 	/**
 	 * @param file
-	 * @return
+	 * @return {@link InputStreamIterable}
 	 */
 	public static InputStreamIterable iterate( final File file ) {
 		return silently( () -> iterate( new FileInputStream( file ) ) );
@@ -113,7 +113,7 @@ public class IO {
 
 	/**
 	 * @param stream
-	 * @return
+	 * @return {@link InputStreamIterable}
 	 */
 	public static InputStreamIterable iterate( final InputStream stream ) {
 		return new InputStreamIterable( stream );
