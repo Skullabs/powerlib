@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import lombok.val;
 
@@ -111,5 +112,16 @@ public class Util {
 
 	public static <T> Iterable<T> iterate( Iterator<T> iterator ) {
 		return () -> iterator;
+	}
+
+	public static <T, R> Iterator<R> convert( Iterator<T> iterator, Function<T, R> converter ) {
+		return convert( iterate( iterator ), converter ).iterator();
+	}
+
+	public static <T, R> Iterable<R> convert( Iterable<T> iterable, Function<T, R> converter ) {
+		List<R> converted = list();
+		for ( T original : iterable )
+			converted.add( converter.apply( original ) );
+		return converted;
 	}
 }

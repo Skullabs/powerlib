@@ -81,14 +81,11 @@ public class File extends java.io.File implements Iterable<File> {
 	}
 
 	boolean deleteRecursively(File directory) {
-		if ( directory.exists() )
-			for (File file : directory) {
-				if ( file.isDirectory() )
-					return deleteRecursively(file);
-				if ( !file.delete() )
+		if ( directory.isDirectory() )
+			for ( File file : directory )
+				if ( !file.delete() && !deleteRecursively( file ) )
 					return false;
-			}
-		return true;
+		return directory.delete() || !directory.exists();
 	}
 
 	/**
