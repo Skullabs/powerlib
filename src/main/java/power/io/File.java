@@ -1,6 +1,6 @@
 package power.io;
 
-import static power.io.IO.iterate;
+import static power.io.IO.copy;
 import static power.util.Throwables.io;
 import static power.util.Throwables.silently;
 
@@ -95,11 +95,9 @@ public class File extends java.io.File implements Iterable<File> {
 	 */
 	public void copyTo( File file ) throws IOException {
 		file.getParentFile().ensureExistsAsDirectory();
-		InputStreamIterable input = iterate( openForRead() );
 		FileOutputStream output = file.openForWrite();
-		for ( ByteBuffer buffer : input )
-			output.write(buffer.buffer(), 0, buffer.length() );
-		input.close();
+		FileInputStream from = openForRead();
+		copy(from, output);
 		output.close();
 	}
 
