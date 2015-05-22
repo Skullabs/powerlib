@@ -28,7 +28,7 @@ public class ConvertersTest {
 			int delimiterIndex = name.indexOf(' ');
 			String methodName = name.substring( 0, delimiterIndex );
 			String[] params = name.substring( delimiterIndex+1 ).split( ", *" );
-			InvokableMethod method = Methods.getStaticMethod( BorderFactory.class, "create"+methodName, params.length);
+			InvokableMethod method = Reflection.getStaticMethod( BorderFactory.class, "create"+methodName, params.length);
 			return (Border)method.convertParamsAndInvoke(params);
 		});
 	}

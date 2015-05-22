@@ -111,7 +111,7 @@ public class Util {
 	}
 
 	public static <T> Iterable<T> iterate( Iterator<T> iterator ) {
-		return () -> iterator;
+		return ( ) -> iterator;
 	}
 
 	public static <T, R> Iterator<R> convert( Iterator<T> iterator, Function<T, R> converter ) {
@@ -119,9 +119,18 @@ public class Util {
 	}
 
 	public static <T, R> Iterable<R> convert( Iterable<T> iterable, Function<T, R> converter ) {
-		List<R> converted = list();
-		for ( T original : iterable )
-			converted.add( converter.apply( original ) );
-		return converted;
+		return ( ) -> new ConverterIterator<>( iterable.iterator(), converter );
+	}
+
+	public static String join( Iterable<String> strings, String delimiter ) {
+		StringBuilder buffer = new StringBuilder();
+		boolean first = true;
+		for ( String string : strings ) {
+			if ( !first )
+				buffer.append( ' ' );
+			buffer.append( string );
+			first = false;
+		}
+		return buffer.toString();
 	}
 }
