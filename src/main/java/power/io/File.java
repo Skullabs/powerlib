@@ -1,6 +1,6 @@
 package power.io;
 
-import static power.io.IO.iterate;
+import static power.io.IO.copy;
 import static power.util.Throwables.io;
 import static power.util.Throwables.silently;
 
@@ -30,15 +30,23 @@ public class File extends java.io.File implements Iterable<File> {
 	}
 
 	/**
-	 * @return all read bytes as String
+	 * @return all read bytes as String as UTF-8
 	 */
 	public String read() {
+		return read( "UTF-8" );
+	}
+
+	/**
+	 * @param charsetName
+	 * @return all read bytes as String
+	 */
+	public String read( String charsetName ) {
 		return silently(() -> {
 			final StringBuilder buffer = new StringBuilder();
 			@Cleanup
 			final InputStreamIterable iterator = reader();
 			for (final ByteBuffer bytes : iterator)
-				buffer.append(bytes.toString());
+				buffer.append(bytes.toString( charsetName ));
 			return buffer.toString();
 		});
 	}
@@ -81,14 +89,11 @@ public class File extends java.io.File implements Iterable<File> {
 	}
 
 	boolean deleteRecursively(File directory) {
-		if ( directory.exists() )
-			for (File file : directory) {
-				if ( file.isDirectory() )
-					return deleteRecursively(file);
-				if ( !file.delete() )
+		if ( directory.isDirectory() )
+			for ( File file : directory )
+				if ( !file.delete() && !deleteRecursively( file ) )
 					return false;
-			}
-		return true;
+		return directory.delete() || !directory.exists();
 	}
 
 	/**
@@ -98,11 +103,9 @@ public class File extends java.io.File implements Iterable<File> {
 	 */
 	public void copyTo( File file ) throws IOException {
 		file.getParentFile().ensureExistsAsDirectory();
-		InputStreamIterable input = iterate( openForRead() );
 		FileOutputStream output = file.openForWrite();
-		for ( ByteBuffer buffer : input )
-			output.write(buffer.buffer(), 0, buffer.length() );
-		input.close();
+		FileInputStream from = openForRead();
+		copy(from, output);
 		output.close();
 	}
 

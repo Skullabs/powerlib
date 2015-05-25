@@ -1,17 +1,19 @@
 package power.reflection;
 
+import static power.util.Util.list;
 import static power.util.Util.pair;
 
 import java.lang.reflect.Executable;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.List;
+import java.util.function.Consumer;
 
 import lombok.val;
 import power.util.KeyValuePairedArrays;
 
-public class Methods {
-	
-	private Methods(){}
+public abstract class Reflection {
 
 	/**
 	 * @param target
@@ -53,7 +55,7 @@ public class Methods {
 				return new ConstructorInvokableMethod( constructor );
 		return new EmptyInvokableMethod( target, "<init>" );
 	}
-	
+
 	/**
 	 * @param target
 	 * @param numberOfParameters
@@ -86,5 +88,29 @@ public class Methods {
 			if ( !tuple.first().isAssignableFrom( tuple.second() ) )
 				return false;
 		return true;
+	}
+
+	/**
+	 * @param clazz
+	 * @return
+	 */
+	public List<Field> getAllFields( Class<?> clazz ) {
+		List<Field> fields = list();
+		forEachField( clazz, ( field ) -> fields.add( field ) );
+		return fields;
+	}
+
+	/**
+	 * @param clazz
+	 * @param fieldHandler
+	 */
+	public void forEachField( Class<?> clazz, Consumer<Field> fieldHandler ) {
+		while ( !Object.class.equals( clazz ) ) {
+			for ( Field field : clazz.getDeclaredFields() ) {
+				field.setAccessible( true );
+				fieldHandler.accept( field );
+			}
+			clazz = clazz.getSuperclass();
+		}
 	}
 }

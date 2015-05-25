@@ -3,11 +3,14 @@ package power.io;
 import static power.util.Throwables.silently;
 import static power.util.Util.str;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.zip.ZipInputStream;
 
+import lombok.Cleanup;
 import lombok.val;
 
 public class IO {
@@ -66,6 +69,41 @@ public class IO {
 	 */
 	public static InputStream resourceFile(String fileName) {
 		return ZipExtractor.class.getResourceAsStream("/" + fileName);
+	}
+
+	/**
+	 * @param stream
+	 * @return
+	 */
+	public static String readAsString( InputStream stream ) {
+		return silently(() -> {
+			final StringBuilder buffer = new StringBuilder();
+			@Cleanup
+			final InputStreamIterable iterator = iterate( stream );
+			for (final ByteBuffer bytes : iterator)
+				buffer.append(bytes.toString());
+			return buffer.toString();
+		});
+	}
+	
+	public static byte[] readAsByteArray( InputStream stream ) {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+        copy(stream, output);
+        return output.toByteArray();
+	}
+
+	/**
+	 * @param from
+	 * @param to
+	 * @throws IOException
+	 */
+	public static void copy(InputStream from, OutputStream to) {
+		silently( ()-> {
+			InputStreamIterable input = iterate( from );
+			for ( ByteBuffer buffer : input )
+				to.write(buffer.buffer(), 0, buffer.length() );
+			input.close();
+		});
 	}
 
 	/**

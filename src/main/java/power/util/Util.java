@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import lombok.val;
 
@@ -28,6 +29,10 @@ public class Util {
 		return new ArrayList<>();
 	}
 
+	public static <T> List<T> listOf( Class<T> type ) {
+		return new ArrayList<>();
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> list( Iterable<T> iterable ) {
 		val list = (List<T>)list();
@@ -36,8 +41,20 @@ public class Util {
 		return list;
 	}
 
-	public static <T> Map<String, T> stringMap() {
+	public static <K,V> Map<K,V> map() {
 		return new HashMap<>();
+	}
+
+	public static <K,V> Map<K,V> mapOf( Class<K> key, Class<V> value ) {
+		return new HashMap<>();
+	}
+
+	public static RespChainBuilder chain(){
+		return new RespChainBuilder();
+	}
+
+	public static <T> RespChain<T> chainFor( Class<T> type ){
+		return new DefaultRespChain<>();
 	}
 
 	public static Iterable<Integer> range( int stop ) {
@@ -110,6 +127,26 @@ public class Util {
 	}
 
 	public static <T> Iterable<T> iterate( Iterator<T> iterator ) {
-		return () -> iterator;
+		return ( ) -> iterator;
+	}
+
+	public static <T, R> Iterator<R> convert( Iterator<T> iterator, Function<T, R> converter ) {
+		return convert( iterate( iterator ), converter ).iterator();
+	}
+
+	public static <T, R> Iterable<R> convert( Iterable<T> iterable, Function<T, R> converter ) {
+		return ( ) -> new ConverterIterator<>( iterable.iterator(), converter );
+	}
+
+	public static String join( Iterable<String> strings, String delimiter ) {
+		StringBuilder buffer = new StringBuilder();
+		boolean first = true;
+		for ( String string : strings ) {
+			if ( !first )
+				buffer.append( ' ' );
+			buffer.append( string );
+			first = false;
+		}
+		return buffer.toString();
 	}
 }
