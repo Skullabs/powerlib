@@ -30,15 +30,23 @@ public class File extends java.io.File implements Iterable<File> {
 	}
 
 	/**
-	 * @return all read bytes as String
+	 * @return all read bytes as String as UTF-8
 	 */
 	public String read() {
+		return read( "UTF-8" );
+	}
+
+	/**
+	 * @param charsetName
+	 * @return all read bytes as String
+	 */
+	public String read( String charsetName ) {
 		return silently(() -> {
 			final StringBuilder buffer = new StringBuilder();
 			@Cleanup
 			final InputStreamIterable iterator = reader();
 			for (final ByteBuffer bytes : iterator)
-				buffer.append(bytes.toString());
+				buffer.append(bytes.toString( charsetName ));
 			return buffer.toString();
 		});
 	}

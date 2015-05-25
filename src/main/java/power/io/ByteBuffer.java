@@ -1,5 +1,6 @@
 package power.io;
 
+import static power.util.Throwables.silently;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -14,6 +15,10 @@ public class ByteBuffer {
 
 	@Override
 	public String toString() {
-		return new String(buffer, 0, length);
+		return toString( "UTF-8" );
+	}
+
+	public String toString( String charset ) {
+		return silently( ()-> new String(buffer, 0, length, charset) );
 	}
 }
