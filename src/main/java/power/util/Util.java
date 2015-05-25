@@ -29,6 +29,10 @@ public class Util {
 		return new ArrayList<>();
 	}
 
+	public static <T> List<T> listOf( Class<T> type ) {
+		return new ArrayList<>();
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> list( Iterable<T> iterable ) {
 		val list = (List<T>)list();
@@ -37,8 +41,20 @@ public class Util {
 		return list;
 	}
 
-	public static <T> Map<String, T> stringMap() {
+	public static <K,V> Map<K,V> map() {
 		return new HashMap<>();
+	}
+
+	public static <K,V> Map<K,V> mapOf( Class<K> key, Class<V> value ) {
+		return new HashMap<>();
+	}
+
+	public static RespChainBuilder chain(){
+		return new RespChainBuilder();
+	}
+
+	public static <T> RespChain<T> chainFor( Class<T> type ){
+		return new DefaultRespChain<>();
 	}
 
 	public static Iterable<Integer> range( int stop ) {
