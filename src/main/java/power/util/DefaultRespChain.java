@@ -1,9 +1,6 @@
 package power.util;
 
-import java.util.function.Function;
-
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.experimental.Accessors;
 
 @Getter
@@ -11,20 +8,23 @@ import lombok.experimental.Accessors;
 @SuppressWarnings({"rawtypes","unchecked"})
 public class DefaultRespChain<T> implements RespChain<T> {
 
-	private Function<T,?> processor = (i)->i;
-	private RespChain next = new BypassRespChain();
+	private Processor<T,?> processor;
+	private RespChain next;
 
 	@Override
-	public <R> RespChain<R> add( @NonNull Function<T, R> processor) {
-		final RespChain<R> entry = new DefaultRespChain<R>();
-		this.next = entry;
+	public <R> RespChain<R> add( Processor<T, R> processor) {
+		this.next = new DefaultRespChain<R>();
 		this.processor = processor;
-		return entry;
+		return next;
 	}
 
 	@Override
-	public Object process( @NonNull T object ) {
-		final Object processed = processor.apply( object );
-		return next.process( processed );
+	public Object process( T object ) {
+		Object processed = object;
+		if ( processor != null )
+			processed = processor.apply( object );
+		if ( next != null )
+			processed = next.process( processed );
+		return processed;
 	}
 }

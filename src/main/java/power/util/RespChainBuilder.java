@@ -1,6 +1,6 @@
 package power.util;
 
-import java.util.function.Function;
+import power.util.RespChain.Processor;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 public class RespChainBuilder {
@@ -8,7 +8,7 @@ public class RespChainBuilder {
 	final RespChain root = new DefaultRespChain<>();
 	RespChain last = root;
 
-	public <T,R> RespChainBuilder add(Function<T,R> processor) {
+	public <T,R> RespChainBuilder add(Processor<T,R> processor) {
 		last = last.add(processor);
 		return this;
 	}
