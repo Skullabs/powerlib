@@ -33,7 +33,7 @@ public class File extends java.io.File implements Iterable<File> {
 	 * @return all read bytes as String as UTF-8
 	 */
 	public String read() {
-		return read( "UTF-8" );
+		return read( IO.DEFAULT_ENCONDING );
 	}
 
 	/**

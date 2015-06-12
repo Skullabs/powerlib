@@ -15,6 +15,8 @@ import lombok.val;
 
 public class IO {
 
+	public static final String DEFAULT_ENCONDING = System.getProperty("file.encoding", "UTF-8");
+
 	private IO(){}
 
 	/**
