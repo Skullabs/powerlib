@@ -23,12 +23,24 @@ public abstract class Reflection {
 	 */
 	public static InvokableMethod getMethod( Object target, String name, Class<?>...expectedTypes ) {
 		for ( val method : target.getClass().getMethods() )
-			if ( methodNameMatches(method, name)
-			&&   parametersMatchesToExpectedTypes(method, expectedTypes))
+			if ( methodNameMatches(method, name) &&  parametersMatchesToExpectedTypes(method, expectedTypes))
 				return new DefaultInvokableMethod(method,target);
 		return new EmptyInvokableMethod( target, name );
 	}
-
+	
+	/**
+	 * @param target
+	 * @param name
+	 * @param expectedTypes
+	 * @return a invokable method
+	 */
+	public static InvokableMethod getAnyMethod( Object target, String name, Class<?>...expectedTypes ) {
+		for ( val method : target.getClass().getMethods() )
+			if ( methodNameMatches(method, name))
+				return new DefaultInvokableMethod(method,target);
+		return new EmptyInvokableMethod( target, name );
+	}
+	
 	/**
 	 * @param target
 	 * @param name
@@ -75,10 +87,8 @@ public abstract class Reflection {
 
 	static boolean parametersMatchesToExpectedTypes( Executable method, Class<?>...expectedTypes ) {
 		val tuples = pair(method.getParameterTypes(), expectedTypes);
-
-		if ( !tuples.hasSameLenght() && expectedTypes.length != 0 )
+		if ( !tuples.hasSameLenght() )
 			return false;
-
 		return parametersMatchesToExpectedTypes(tuples);
 	}
 

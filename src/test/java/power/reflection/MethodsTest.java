@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import lombok.val;
 import lombok.experimental.Accessors;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import power.util.Util;
@@ -22,9 +23,9 @@ public class MethodsTest {
 		val hero = new Hero();
 			
 		val knife = new Weapon();
-		Reflection.getMethod(hero, "add", Weapon.class).invoke( knife );
+		Reflection.getAnyMethod(hero, "add", Weapon.class).invoke( knife );
 		val gun = new Weapon();
-		Reflection.getMethod(hero, "add", Item.class).invoke( gun );
+		Reflection.getAnyMethod(hero, "add", Item.class).invoke( gun );
 		
 		assertEquals( 2, hero.items().size() );
 	}
@@ -38,6 +39,19 @@ public class MethodsTest {
 		val weapon3 = (Weapon)Reflection.getConstructor( Weapon.class, 0).invoke();
 		assertEquals( 0, weapon3.damage());
 	}
+	
+	@Test
+	public void ensureThatCouldFindCorrectMethods(){
+		val method1 = Reflection.getAnyMethod(new TwoMethods(), "getName");
+		Assert.assertEquals(1, method1.executable().getParameterCount());
+		val method2 = Reflection.getMethod(new TwoMethods(), "getName");
+		Assert.assertEquals(0, method2.executable().getParameterCount());
+		val method3 = Reflection.getMethod(new TwoMethods(), "getName", String.class);
+		Assert.assertEquals(1, method3.executable().getParameterCount());
+		val method4 = Reflection.getMethod(new TwoMethods(), "getName", Integer.class);
+		Assert.assertNull(method4.executable());
+	}
+
 }
 
 interface Item {}
@@ -63,4 +77,16 @@ class Weapon implements Item {
 	public Weapon() {
 		damage = 0;
 	}
+}
+
+class TwoMethods{
+	
+	public String getName(String parameter){
+		return null;
+	}
+	
+	public String getName(){
+		return null;
+	}
+	
 }
