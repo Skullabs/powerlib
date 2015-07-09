@@ -104,9 +104,9 @@ public abstract class Reflection {
 	 * @param clazz
 	 * @return
 	 */
-	public List<Field> getAllFields( Class<?> clazz ) {
+	public static List<Field> getAllFields( Class<?> clazz ) {
 		List<Field> fields = list();
-		forEachField( clazz, ( field ) -> fields.add( field ) );
+		forEachAllFields( clazz, ( field ) -> fields.add( field ) );
 		return fields;
 	}
 
@@ -114,7 +114,7 @@ public abstract class Reflection {
 	 * @param clazz
 	 * @param fieldHandler
 	 */
-	public void forEachField( Class<?> clazz, Consumer<Field> fieldHandler ) {
+	public static void forEachAllFields( Class<?> clazz, Consumer<Field> fieldHandler ) {
 		while ( !Object.class.equals( clazz ) ) {
 			for ( Field field : clazz.getDeclaredFields() ) {
 				field.setAccessible( true );
