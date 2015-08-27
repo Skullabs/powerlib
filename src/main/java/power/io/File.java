@@ -7,11 +7,9 @@ import static power.util.Throwables.silently;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.Iterator;
-
-import lombok.Cleanup;
 
 public class File extends java.io.File implements Iterable<File> {
 
@@ -41,19 +39,7 @@ public class File extends java.io.File implements Iterable<File> {
 	 * @return all read bytes as String
 	 */
 	public String read( String charsetName ) {
-		return silently(() -> {
-			final StringBuilder buffer = new StringBuilder();
-			@Cleanup
-			final InputStreamIterable iterator = reader();
-			for (final ByteBuffer bytes : iterator)
-				buffer.append(bytes.toString( charsetName ));
-			return buffer.toString();
-		});
-	}
-
-	public InputStreamIterable reader() {
-		final InputStream fileStream = openForRead();
-		return new InputStreamIterable(fileStream);
+		return silently(()-> new String( Files.readAllBytes(toPath()), charsetName ) );
 	}
 
 	public FileInputStream openForRead() {
