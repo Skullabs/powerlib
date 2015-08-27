@@ -25,21 +25,12 @@ public class FileTest {
 	
 	@Test
 	public void testaReadWithAccents(){
-		val stringAcentos = createString();
+		val string = createString();
 		Assert.assertEquals("", file.read());
 		val writer = file.writer();
-		writer.write( stringAcentos );
+		writer.write( string );
 		silently(()-> writer.close() );
-		Assert.assertEquals(stringAcentos, file.read());
-	}
-	
-	@Test
-	public void testaReadFromReaderWithAccents(){
-		val stringAcentos = createString();
-		val writer = file.writer();
-		writer.write( stringAcentos );
-		silently(()-> writer.flush() );
-		Assert.assertEquals(stringAcentos, file.read());
+		Assert.assertEquals(string, file.read());
 	}
 
 	private String createString() {
