@@ -24,20 +24,19 @@ public class SocketChannelReader {
 	}
 
 	//UNCHECKED: mais linhas do que o permitido
-	public String read( final String charset, final int bufferSize ) throws IOException {
+	public String read( final String charset, int bufferSize ) throws IOException {
 		final ByteBuffer buffer = ByteBuffer.allocate( bufferSize );
-		final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		int readedBytes;
-		while ( (readedBytes = socketChannel.read(buffer)) > 0 ){
-			if ( readedBytes == bufferSize ){
-				byteArrayOutputStream.write( buffer.array() );
-				buffer.clear();
-			} else {
-				byteArrayOutputStream.write( Arrays.copyOf(buffer.array(), readedBytes) );
-				break;
+		final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		while ( true ){
+			final int readedBytes = getSocketChannel().read( buffer );
+			if ( readedBytes == -1 ) break;
+			if ( readedBytes > 0 ) {
+				final byte[] bytes = readedBytes == bufferSize ? buffer.array() : Arrays.copyOf(buffer.array(), readedBytes);
+				byteStream.write( bytes );
 			}
+			buffer.clear();
 		}
-		return new String( byteArrayOutputStream.toByteArray(), charset );
+		return new String( byteStream.toByteArray(), charset );
 	}
 	//CHECKED
 
