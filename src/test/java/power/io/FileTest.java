@@ -6,6 +6,9 @@ import static power.util.Throwables.silently;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
+import lombok.Cleanup;
+import lombok.SneakyThrows;
+import lombok.extern.apachecommons.CommonsLog;
 import lombok.val;
 
 import org.junit.Assert;
@@ -31,6 +34,18 @@ public class FileTest {
 		writer.write( string );
 		silently(()-> writer.close() );
 		Assert.assertEquals(string, file.read());
+	}
+
+	@Test
+	@SneakyThrows
+	public void test(){
+		File file = file("target/xxx");
+		val w = file.writer();
+		w.write( "AA\nBB\nCC\n" );
+		w.close();
+		for ( String fileLine : file.readLines() ){
+			System.out.println( fileLine );
+		}
 	}
 
 	private String createString() {
