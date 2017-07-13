@@ -3,7 +3,7 @@
 Utility classes to boost your development
 
 ## File read / write
-```
+```java
 import power.io.IO;
 import power.io.File;
 import power.io.FileWriter;
@@ -28,7 +28,7 @@ for ( String fileLine : myFile.readLines() ){
 ```
 
 ## Read input stream
-```
+```java
 import power.io.IO;
 
 ...
@@ -46,7 +46,7 @@ System.out.println( "Stream length is: " + streamAsString.length );
 ```
 
 ## Socket requests
-```
+```java
 import power.io.SocketRequester;
 
 ...
