@@ -33,7 +33,28 @@ System.out.println( "File content is: " + fileContent );
 for ( String fileLine : myFile.readLines() ){
     System.out.println( "Line is: " + fileLine );
 }
+```
 
+## Formatters
+```java
+import power.util.Lang;
+
+...
+
+// Inject using CDI
+@Inject
+Lang lang;
+// Or create over builder
+Lang lang = new Lang.Builder()
+    .currencyDecimalPlaces( 5 )
+    .currencyThousandSeparator( '.' )
+    .currencyDecimalSeparator( ',' )
+    .build();
+```
+
+### Currency
+```java
+System.out.println( lang.currency( 400.666 ) );
 ```
 
 ## Read input stream
