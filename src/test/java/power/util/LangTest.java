@@ -21,4 +21,14 @@ public class LangTest {
 		assertNull( lang.currency(null) );
 	}
 
+	@Test
+	public void testCustomLang(){
+		Lang customLang = new Lang.Builder()
+				.currencyDecimalPlaces( 3 )
+				.currencyThousandSeparator( ',' )
+				.currencyDecimalSeparator( '.' )
+				.build();
+		assertEquals("4,000.555", customLang.currency(4000.5555));
+	}
+
 }

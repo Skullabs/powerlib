@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.val;
 
 @AllArgsConstructor( access = AccessLevel.PRIVATE )
@@ -18,11 +19,12 @@ public class Lang {
 		return currencyFormatter.format( value );
 	}
 
+	@Accessors( fluent = true )
 	public static class Builder {
 
-		@Setter final char currencyThousandSeparator = '.';
-		@Setter final char currencyDecimalSeparator = ',';
-		@Setter final int currencyDecimalPlaces = 2;
+		@Setter char currencyThousandSeparator = '.';
+		@Setter char currencyDecimalSeparator = ',';
+		@Setter int currencyDecimalPlaces = 2;
 
 		public Lang build(){
 			// Currency formatter
