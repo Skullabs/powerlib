@@ -4,7 +4,7 @@
 
 	<groupId>io.skullabs.powerlib</groupId>
 	<artifactId>powerlib</artifactId>
-	<version>0.2.2</version>
+	<version>0.2.3</version>
 	<packaging>jar</packaging>
 
 	<name>Powerlib</name>
@@ -31,6 +31,11 @@
 			<id>miere</id>
 			<email>miere.teixeira@gmail.com</email>
 			<name>Miere Liniel Teixeira</name>
+		</developer>
+		<developer>
+			<id>ronei</id>
+			<email>ronei_vinicius@hotmail.com</email>
+			<name>Ronei Vinicius Gebert</name>
 		</developer>
 		<developer>
 			<id>selomke</id>
@@ -60,9 +65,9 @@
 		<skip.unit.tests>false</skip.unit.tests>
 		<!-- Dependencies Versions -->
 		<version.junit>4.12</version.junit>
-		<version.lombok>1.14.8</version.lombok>
-		<version.mockito>1.10.19</version.mockito>
-		<version.maven.compiler.plugin>2.3.2</version.maven.compiler.plugin>
+		<version.lombok>1.16.18</version.lombok>
+		<version.mockito>2.8.47</version.mockito>
+		<version.maven.compiler.plugin>3.6.1</version.maven.compiler.plugin>
 	</properties>
 
 	<dependencies>
@@ -84,6 +89,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${version.lombok}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.skullabs.kikaha</groupId>
+			<artifactId>kikaha-injection-processor</artifactId>
+			<version>2.1.0-beta2</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -222,7 +233,7 @@
 						<configuration>
 							<show>private</show>
 							<nohelp>true</nohelp>
-						<excludePackageNames>power.io;power.reflection</excludePackageNames>
+							<excludePackageNames>power.io;power.reflection</excludePackageNames>
 						</configuration>
 					</plugin>
 					<plugin>

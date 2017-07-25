@@ -12,52 +12,59 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class SocketRequestTest {
+public class SocketRequesterTest {
 
 	private final int testPort = 12345;
 	private final TestServer server = new TestServer();
 	
 	@Test
 	public void testReceiveSampleString(){
-		final String expected = "test";
-		server.returnStringOnRequest( expected );
-		final SocketRequest request = SocketRequest.create( testPort );
-		final String received = request.receive();
-		Assert.assertEquals(expected, received);
-		Assert.assertFalse(request.getSocketChannel().isConnectionPending());
+		server.returnStringOnRequest( "UNIT-TEST-STRING" );
+		final SocketRequester requester = new SocketRequester.Builder().port( testPort ).build();
+		final String received = requester.receive();
+		Assert.assertEquals("UNIT-TEST-STRING", received);
+		Assert.assertFalse(requester.getSocketChannel().isConnectionPending());
 	}
 	
 	@Test
 	public void testSendSampleString(){
-		final String expectedSended = "expectedSended";
-		final String expectedReceived = "expectedReceived";
-		server.receiveStringAndReturnStringOnRequest( expectedReceived );
-		final String received = SocketRequest.create( testPort ).send( expectedSended ).receive();
-		Assert.assertEquals(expectedReceived, received);
-		Assert.assertEquals(expectedSended, server.receivedString);
+		server.receiveStringAndReturnStringOnRequest( "UNIT-TEST-STRING-RESPONSE" );
+		final SocketRequester requester = new SocketRequester.Builder().port( testPort ).build();
+		final String received = requester.send( "UNIT-TEST-STRING-REQUEST" ).receive();
+		Assert.assertEquals("UNIT-TEST-STRING-RESPONSE", received);
+		Assert.assertEquals("UNIT-TEST-STRING-REQUEST", server.receivedString);
 	}
-	
+
+	@Test
+	public void testSendSampleStringAndReceiveAtCharacter(){
+		server.receiveStringAndReturnStringOnRequest( "RESPONSE-STRING" );
+		final SocketRequester requester = new SocketRequester.Builder().port( testPort ).build();
+		final String received = requester.send( "REQUEST-STRING" ).receiveAt( '-' );
+		Assert.assertEquals("RESPONSE", received);
+		Assert.assertEquals("REQUEST-STRING", server.receivedString);
+	}
+
 	@Test
 	public void testEncodingOnReceiveString(){
-		final String expectedSended = "send \t -> \n MÂÂõõÊÊ\n";
-		final String expectedReceived = "receive \t -> \n MÂÂõõÊÊ\n";
-		server.receiveStringAndReturnStringOnRequest( expectedReceived );
-		final String received = SocketRequest.create( testPort ).send( expectedSended, "UTF-8" ).receive( "UTF-8", 1 );
-		Assert.assertEquals(expectedReceived, received);
-		Assert.assertEquals(expectedSended, server.receivedString);
+		server.receiveStringAndReturnStringOnRequest( "receive \t -> \n MÂÂõõÊÊ\n" );
+		final SocketRequester requester = new SocketRequester.Builder().port( testPort ).build();
+		final String received = requester.send( "send \t -> \n MÂÂõõÊÊ\n", "UTF-8" ).receive( "UTF-8", 1 );
+		Assert.assertEquals("receive \t -> \n MÂÂõõÊÊ\n", received);
+		Assert.assertEquals("send \t -> \n MÂÂõõÊÊ\n", server.receivedString);
 	}
 	
-	@Test( expected=SocketRequest.ConnectException.class )
+	@Test( expected=SocketRequester.ConnectException.class )
 	public void testConnectionError(){
 		server.returnStringOnRequest( "test" );
-		SocketRequest.create( testPort + 1 );
+		new SocketRequester.Builder().port( testPort+1 ).build();
 	}
 	
-	@Test( expected=SocketRequest.TimeoutException.class )
+	@Test( expected=SocketRequester.TimeoutException.class )
 	@Ignore
 	//TODO: Testar timeout
 	public void testTimeoutError(){
-		SocketRequest.create( testPort ).timeout(1).send( "test" ).receive();
+		final SocketRequester requester = new SocketRequester.Builder().port( testPort ).timeout( 1 ).build();
+		requester.send( "test" ).receive();
 	}
 	
 	private class TestServer{
