@@ -33,6 +33,11 @@
 			<name>Miere Liniel Teixeira</name>
 		</developer>
 		<developer>
+			<id>ronei</id>
+			<email>ronei_vinicius@hotmail.com</email>
+			<name>Ronei Vinicius Gebert</name>
+		</developer>
+		<developer>
 			<id>selomke</id>
 			<email>cesar.selomke@gmail.com</email>
 			<name>Cesar Henrique Selomke</name>
@@ -84,6 +89,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${version.lombok}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.skullabs.kikaha</groupId>
+			<artifactId>kikaha-injection-processor</artifactId>
+			<version>2.1.0-beta2</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
