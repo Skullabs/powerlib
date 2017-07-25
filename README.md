@@ -1,6 +1,15 @@
 # PowerLib
 
-Utility classes to boost your development
+Utility classes to boost your development.
+
+Configure as maven dependency:
+```xml
+<dependency>
+    <groupId>io.skullabs.powerlib</groupId>
+    <artifactId>powerlib</artifactId>
+    <version>0.2.3</version>
+</dependency>
+```
 
 ## File read / write
 ```java
