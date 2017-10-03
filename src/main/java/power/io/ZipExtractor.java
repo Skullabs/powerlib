@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -29,6 +30,7 @@ import lombok.experimental.Accessors;
 public class ZipExtractor implements Closeable {
 
 	@NonNull Consumer<String> notifier = (name)->{};
+	@NonNull Function<String, Boolean> filter = (fileName)-> true;
 	final ZipInputStream zipFile;
 
 	/**
@@ -63,8 +65,10 @@ public class ZipExtractor implements Closeable {
 	private void writeEntriesIntoDirectory(File directory) throws IOException {
 		ZipEntry entry;
 		while ( (entry = zipFile.getNextEntry()) != null ){
-			notifier.accept( entry.getName() );
-			writeEntryIntoDirectory( directory, entry );
+			if ( filter.apply( entry.getName() ) ) {
+				notifier.accept(entry.getName());
+				writeEntryIntoDirectory(directory, entry);
+			}
 		}
 	}
 
