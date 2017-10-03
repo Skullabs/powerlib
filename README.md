@@ -7,7 +7,7 @@ Configure as maven dependency:
 <dependency>
     <groupId>io.skullabs.powerlib</groupId>
     <artifactId>powerlib</artifactId>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
 </dependency>
 ```
 
