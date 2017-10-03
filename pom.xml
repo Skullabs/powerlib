@@ -64,6 +64,7 @@
 		<skip.integration.tests>true</skip.integration.tests>
 		<skip.unit.tests>false</skip.unit.tests>
 		<!-- Dependencies Versions -->
+		<version.kikaha>2.1.0.Final</version.kikaha>
 		<version.junit>4.12</version.junit>
 		<version.lombok>1.16.18</version.lombok>
 		<version.mockito>2.8.47</version.mockito>
@@ -94,7 +95,7 @@
 		<dependency>
 			<groupId>io.skullabs.kikaha</groupId>
 			<artifactId>kikaha-injection-processor</artifactId>
-			<version>2.1.0-beta2</version>
+			<version>${version.kikaha}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
