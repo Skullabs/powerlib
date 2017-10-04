@@ -70,7 +70,7 @@ java.io.InputStream myStream = getMyStream();
 String streamAsString = IO.readAsString( myStream );
 System.out.println( "Stream content is: " + streamAsString );
 // Or read as bytes
-byte[] streamAsBytes = readAsByteArray( myStream );
+byte[] streamAsBytes = IO.readAsByteArray( myStream );
 System.out.println( "Stream length is: " + streamAsString.length );
 
 ```
