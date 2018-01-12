@@ -20,6 +20,7 @@ public class SocketRequester {
 	private final SocketChannel socketChannel;
 	private final SocketChannelReader reader;
 	private final SocketChannelWriter writer;
+	private final boolean autoClosable;
 
 	// Send string methods
 
@@ -36,10 +37,10 @@ public class SocketRequester {
 			writer.write( socketChannel, bytes );
 			return this;
 		} catch ( final SocketTimeoutException e ) {
-			close();
+            closeIfAutoClosable();
 			throw new TimeoutException();
 		} catch ( final Exception e ) {
-			close();
+            closeIfAutoClosable();
 			throw new ConnectException( "Erro ao enviar dados", e );
 		}
 	}
@@ -60,7 +61,7 @@ public class SocketRequester {
 		} catch ( Exception e ){
 			throw new ConnectException( "Erro ao ler resposta", e );
 		} finally {
-			close();
+            closeIfAutoClosable();
 		}
 	}
 
@@ -80,14 +81,20 @@ public class SocketRequester {
 		} catch ( Exception e ){
 			throw new ConnectException( "Erro ao ler resposta", e );
 		} finally {
-			close();
+            closeIfAutoClosable();
 		}
 	}
-	
+
+	private void closeIfAutoClosable(){
+	    if ( autoClosable ) {
+            close();
+        }
+    }
+
 	/**
-	 * Método apenas precisa ser executado se é feita uma requisicao na qual não 
+	 * Método apenas precisa ser executado se é feita uma requisicao que é closeIfAutoClosable e na qual não
 	 * são executados os métodos de leitura de resposta ({@link #receive()}, {@link #receive(String)}, {@link #receive(String, int)})
-	 * Em casos de erros, a conexao também é encerrada automaticamente
+	 * Em casos de erros, a conexao também é encerrada automaticamente (se closeIfAutoClosable for true)
 	 */
 	public void close() {
 		runAnyWay(()-> socketChannel.close() );
@@ -119,13 +126,14 @@ public class SocketRequester {
 		@Setter int timeout = 0;
 		@Setter SocketChannelReader reader = readerInstance;
 		@Setter SocketChannelWriter writer = writerInstance;
+		@Setter boolean autoClosable = true;
 
 		public SocketRequester build() throws ConnectException {
 			try {
 				final SocketChannel channel = SocketChannel.open();
 				channel.connect(new InetSocketAddress(host, port));
 				silently(() -> channel.socket().setSoTimeout( timeout ) );
-				return new SocketRequester( channel, reader, writer );
+				return new SocketRequester( channel, reader, writer, autoClosable );
 			} catch ( Exception e ){
 				throw new ConnectException("Erro ao criar/connectar socket", e);
 			}
